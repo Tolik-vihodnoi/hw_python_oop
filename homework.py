@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from typing import List, ClassVar, Type
 
 
@@ -10,17 +10,15 @@ class InfoMessage:
     distance: float
     speed: float
     calories: float
-    MESSAGE: ClassVar[str] = ('Тип тренировки: {}; '
-                              'Длительность: {:.3f} ч.; '
-                              'Дистанция: {:.3f} км; '
-                              'Ср. скорость: {:.3f} км/ч; '
-                              'Потрачено ккал: {:.3f}.')
+    MESSAGE: ClassVar[str] = ('Тип тренировки: {training_type}; '
+                              'Длительность: {duration:.3f} ч.; '
+                              'Дистанция: {distance:.3f} км; '
+                              'Ср. скорость: {speed:.3f} км/ч; '
+                              'Потрачено ккал: {calories:.3f}.')
 
     def get_message(self):
         """Получить информацию о тренировке."""
-        return self.MESSAGE.format(self.training_type,
-                                   self.duration, self.distance,
-                                   self.speed, self.calories)
+        return self.MESSAGE.format(**asdict(self))
 
 
 class Training:
@@ -101,7 +99,7 @@ class SportsWalking(Training):
 
 class Swimming(Training):
     """Тренировка: плавание."""
-    LEN_STEP = 1.38
+    LEN_STEP: float = 1.38
     CALORIES_MULTIPLIER: int = 2
     CALORIES_MEAN_SPEED_SHIFT: float = 1.1
 
